@@ -1,12 +1,18 @@
 package main
 
-//Settings ...
+// Settings ...
 type Settings struct {
 	DBPath string `json:"dbPath"`
+	Http   Http   `json:"http"`
 	Feeds  []Feed `json:"feeds"`
 }
 
-//Feed ...
+// Http ...
+type Http struct {
+	TimeOut int `json:"timeOut"`
+}
+
+// Feed ...
 type Feed struct {
 	Name       string        `json:"name"`
 	RssURL     string        `json:"rssUrl"`
@@ -16,14 +22,14 @@ type Feed struct {
 	Key        string        `json:"key"`
 }
 
-//Command ..
+// Command ..
 type Command struct {
 	Executable        string            `json:"executable"`
 	ArgumentTemplates []string          `json:"argumentTemplates"`
 	Variables         map[string]string `json:"variables"`
 }
 
-//RssItemRule ...
+// RssItemRule ...
 type RssItemRule struct {
 	Operator             string   `json:"operator"`
 	RssItemField         string   `json:"rssItemField"`

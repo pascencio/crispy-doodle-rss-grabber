@@ -1,5 +1,6 @@
 {
     "dbPath": "rssdb",
+    "timeOut": 300,
     "feeds": [
         {
             "name": "SubsPlease",

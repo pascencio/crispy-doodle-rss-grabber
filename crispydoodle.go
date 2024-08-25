@@ -50,7 +50,7 @@ func main() {
 	}
 
 	database = db
-	// processRSS(&settingsHash, &settings)
+	processRSS(&settingsHash, &settings)
 	fmt.Printf("Finished Successfully (%s)\n", time.Now().Format(time.RFC3339))
 
 }
@@ -60,7 +60,7 @@ func processRSS(settingsHash *string, settings *Settings) {
 	for i := 0; i < len(settings.Feeds); i++ {
 		var feed = settings.Feeds[i]
 		fmt.Printf("Processing RSS Feed from %s\n", feed.RssURL)
-		rssFeed, err := getRssFeedFromURL(feed.RssURL)
+		rssFeed, err := getRssFeedFromURL(feed.RssURL, settings.Http.TimeOut)
 		if err != nil {
 			log.Printf("Fail to get RSS Feed from %s\n", feed.RssURL)
 			continue
@@ -240,9 +240,12 @@ func upperCaseOrDefault(uppercase bool, value string) string {
 
 }
 
-func getRssFeedFromURL(url string) (RssFeed, error) {
+func getRssFeedFromURL(url string, timeOut int) (RssFeed, error) {
 	var rssFeed RssFeed
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: time.Duration(timeOut) * time.Second,
+	}
+	resp, err := client.Get(url)
 	if err != nil {
 		log.Print(err)
 		return rssFeed, err
